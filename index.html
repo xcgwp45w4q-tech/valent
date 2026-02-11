@@ -54,3 +54,96 @@
     text-align: center;
     font-size: clamp(22px, 4.2vw, 36px);
     opacity: 0;
+    animation: fadeIn 0.9s forwards;
+    animation-delay: 4s;         /* should match walk duration */
+    padding: 0 16px;
+    box-sizing: border-box;
+    z-index: 2;
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
+  .btn-row {
+    margin-top: 14px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  button {
+    padding: 12px 22px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #yes { background: #ff4d88; color: white; }
+  #no  { background: #d9d9d9; }
+
+  /* Keep No button above everything (so it doesn't "vanish") */
+  #no {
+    position: relative;
+    z-index: 9999;
+  }
+</style>
+</head>
+
+<body>
+  <div class="stage">
+    <div class="video-wrap">
+      <video id="video" src="walk.mp4" autoplay muted playsinline></video>
+    </div>
+
+    <div id="question">
+      Will you be my Valentine? 💖
+      <div class="btn-row">
+        <button id="yes">YES 💘</button>
+        <button id="no">No 🙈</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const noBtn = document.getElementById("no");
+
+  function moveButton() {
+    const padding = 12;
+
+    // Switch to fixed so it can move anywhere on screen reliably
+    noBtn.style.position = "fixed";
+    noBtn.style.zIndex = 9999;
+
+    const maxX = window.innerWidth  - noBtn.offsetWidth  - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+    // Clamp so it NEVER goes off-screen (prevents "disappearing")
+    const x = Math.max(padding, Math.floor(Math.random() * maxX));
+    const y = Math.max(padding, Math.floor(Math.random() * maxY));
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top  = y + "px";
+  }
+
+  // Desktop
+  noBtn.addEventListener("mouseenter", moveButton);
+
+  // Mobile: touchstart fires before click; prevent it from being tapped
+  noBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    moveButton();
+  }, { passive: false });
+
+  // Extra safety: if somehow click triggers, still move away
+  noBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    moveButton();
+  });
+</script>
+</body>
+</html>
