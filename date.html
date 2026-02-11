@@ -4,119 +4,130 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Our Date 💖</title>
+
 <style>
-body {
-  margin:0;
-  font-family: Arial, sans-serif;
-  background:#F8D3EE;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  height:100vh;
-  overflow:hidden;
-}
+  :root{
+    --bg: #F8D3EE;
 
-/* Layout */
-.container {
-  display:flex;
-  align-items:center;
-  gap:40px;
-  padding:20px;
-}
+    /* Valentine palette */
+    --rose: #FF4D88;
+    --hotpink: #FF2D87;
+    --plum: #6C2DFF;
+    --berry: #8A1C5A;
+    --cream: #FFF1F8;
 
-/* Chibi on left */
-.chibi {
-  width:260px;
-}
-.chibi img {
-  width:100%;
-  animation: slideRight 1.2s ease forwards;
-}
-@keyframes slideRight {
-  to { transform: translateX(40px); }
-}
+    --card: rgba(255, 241, 248, 0.92);      /* soft cream-pink */
+    --cardBorder: rgba(255, 77, 136, 0.35); /* rose border */
+    --shadow: 0 14px 30px rgba(138, 28, 90, 0.10);
+  }
 
-/* Options text */
-.content {
-  max-width:480px;
-}
+  body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
 
-h1 {
-  font-size:36px;
-  margin-bottom:20px;
-}
-h1 span:nth-child(1){ color:#ff2d87; }
-h1 span:nth-child(2){ color:#6c2dff; }
-h1 span:nth-child(3){ color:#00b894; }
+  .container{
+    width:min(980px, 92vw);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:min(5vw, 44px);
+    padding:min(6vw, 50px);
+    box-sizing:border-box;
+  }
 
-.option {
-  background:white;
-  padding:14px;
-  border-radius:12px;
-  margin:10px 0;
-  border:2px solid transparent;
-  cursor:pointer;
-  font-size:18px;
-}
-.option:hover { border-color:#ff4d88; }
+  /* Chibi on left */
+  .chibi{
+    width:min(280px, 38vw);
+    flex:0 0 auto;
+    filter: drop-shadow(0 10px 18px rgba(138, 28, 90, 0.18));
+  }
+  .chibi img{
+    width:100%;
+    height:auto;
+    display:block;
+    transform: translateX(0);
+    transition: transform 700ms ease;
+  }
 
-.final {
-  display:none;
-  margin-top:20px;
-  font-weight:bold;
-  font-size:24px;
-  color:#6c2dff;
-}
-.suggest {
-  display:none;
-  margin-top:15px;
-  font-weight:bold;
-  font-size:22px;
-}
+  .content{
+    max-width:560px;
+  }
+
+  /* Title */
+  h1{
+    margin:0 0 14px 0;
+    font-size:clamp(28px, 5vw, 46px);
+    line-height:1.05;
+    letter-spacing:0.3px;
+  }
+  h1 .a{ color: var(--hotpink); }
+  h1 .b{ color: var(--plum); }
+  h1 .c{ color: var(--berry); }
+
+  /* Subtitle */
+  .sub{
+    margin:0 0 18px 0;
+    font-size:clamp(16px, 2.8vw, 20px);
+    color: rgba(138, 28, 90, 0.82);
+    font-weight:700;
+  }
+
+  /* Options as valentine cards (NOT white) */
+  .option{
+    background: var(--card);
+    border: 2px solid var(--cardBorder);
+    box-shadow: var(--shadow);
+    padding: 14px 16px;
+    border-radius: 16px;
+    margin: 12px 0;
+    cursor: pointer;
+    font-size: 18px;
+    color: rgba(60, 10, 35, 0.90);
+    font-weight: 800;
+    transition: transform 140ms ease, border-color 140ms ease, background 140ms ease, opacity 140ms ease;
+    user-select:none;
+  }
+  .option:hover{ transform: translateY(-1px); border-color: rgba(255, 77, 136, 0.65); }
+
+  /* Selected state */
+  .option.selected{
+    border-color: var(--rose);
+    background: linear-gradient(135deg, rgba(255, 77, 136, 0.18), rgba(108, 45, 255, 0.10)) , var(--card);
+  }
+
+  /* Locked state (after one choice) */
+  .option.locked{
+    opacity: 0.45;
+    cursor: default;
+    transform: none;
+  }
+
+  /* Messages */
+  .final, .suggest{
+    display:none;
+    margin-top: 18px;
+    font-weight: 900;
+    font-size: clamp(20px, 3.6vw, 30px);
+    letter-spacing: 0.2px;
+  }
+  .final{ color: var(--plum); }
+  .suggest{ color: var(--hotpink); }
+
+  /* Mobile stacking */
+  @media (max-width: 720px){
+    .container{ flex-direction: column; text-align:center; }
+    .content{ width:100%; }
+  }
 </style>
 </head>
+
 <body>
-
-<div class="container">
-  <div class="chibi">
-    <img src="chibi.png" alt="Chibi">
-  </div>
-
-  <div class="content">
-    <h1>
-      <span>Pick</span> <span>our</span> <span>date!</span>
-    </h1>
-
-    <div class="option" data-choice="1">1. Movie night + cook dinner</div>
-    <div class="option" data-choice="2">2. Movie + ramen</div>
-    <div class="option" data-choice="3">3. Open to suggestions</div>
-
-    <div class="final" id="finalText">Its a date 💘</div>
-    <div class="suggest" id="suggestText">Think... and call me ☎️</div>
-  </div>
-</div>
-
-<script>
-const finalText = document.getElementById("finalText");
-const suggestText = document.getElementById("suggestText");
-
-document.querySelectorAll(".option").forEach(opt => {
-  opt.addEventListener("click", () => {
-    const c = opt.dataset.choice;
-
-    if(c === "3"){
-      suggestText.style.display = "block";
-      finalText.style.display = "none";
-      return;
-    }
-
-    finalText.style.display = "block";
-    suggestText.style.display = "none";
-    opt.style.borderColor = "#ff4d88";
-    opt.style.background = "#ffe6f0";
-  });
-});
-</script>
-
-</body>
-</html>
+  <div class="container">
+    <div
