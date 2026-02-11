@@ -212,6 +212,7 @@ function confettiBurst() {
 yesBtn.addEventListener("click", async () => {
   try { await popSound.play(); } catch(e){}
   confettiBurst();
+  setTimeout(() => { window.location.href = "date.html"; }, 1200);
 });
 </script>
 
