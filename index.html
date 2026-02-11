@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Valentine 💖</title>
+<style>
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #ffe6f0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+/* VIDEO starts off-screen */
+#video {
+  position: absolute;
+  top: 45%;
+  left: -250px;
+  width: 220px;
+  animation: walkAcross 4s forwards linear;
+}
+
+@keyframes walkAcross {
+  to { left: 38%; }
+}
+
+#question {
+  position: absolute;
+  top: 72%;
+  width: 100%;
+  font-size: 30px;
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+  animation-delay: 4s;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+button {
+  padding: 12px 24px;
+  font-size: 18px;
+  margin: 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+#yes { background: #ff4d88; color: white; }
+#no { background: #ccc; }
+</style>
+</head>
+<body>
+
+<video id="video" src="walk.mp4" autoplay muted playsinline></video>
+
+<div id="question">
+  Will you be my Valentine? 💖<br>
+  <button id="yes">YES 💘</button>
+  <button id="no">No 🙈</button>
+</div>
+
+<script>
+const noBtn = document.getElementById("no");
+
+function moveButton() {
+  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+  noBtn.style.position = "absolute";
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+}
+
+noBtn.addEventListener("mouseenter", moveButton);
+noBtn.addEventListener("touchstart", moveButton);
+</script>
+
+</body>
+</html>
