@@ -1,81 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Valentine 💖</title>
+
 <style>
-body {
-  margin: 0;
-  overflow: hidden;
-  background: #ffe6f0;
-  font-family: Arial, sans-serif;
-  text-align: center;
-}
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: #ffe6f0;
+    font-family: Arial, sans-serif;
+  }
 
-/* VIDEO starts off-screen */
-#video {
-  position: absolute;
-  top: 45%;
-  left: -250px;
-  width: 220px;
-  animation: walkAcross 4s forwards linear;
-}
+  /* Layout: top area for video, bottom area for question */
+  .stage {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 6vh;
+    box-sizing: border-box;
+  }
 
-@keyframes walkAcross {
-  to { left: 38%; }
-}
+  /* Video container sits above the question */
+  .video-wrap {
+    width: min(360px, 75vw);
+    height: auto;
+    position: relative;
+    flex: 0 0 auto;
+  }
 
-#question {
-  position: absolute;
-  top: 72%;
-  width: 100%;
-  font-size: 30px;
-  opacity: 0;
-  animation: fadeIn 1s forwards;
-  animation-delay: 4s;
-}
+  /* Make the VIDEO move from RIGHT to CENTER */
+  #video {
+    width: 100%;
+    height: auto;
+    display: block;
 
-@keyframes fadeIn {
-  to { opacity: 1; }
-}
+    position: relative;
+    left: 120vw;                 /* start off-screen RIGHT */
+    animation: walkFromRight 4s forwards linear;
+  }
 
-button {
-  padding: 12px 24px;
-  font-size: 18px;
-  margin: 10px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-}
+  @keyframes walkFromRight {
+    to { left: 0; }              /* end centered in its container */
+  }
 
-#yes { background: #ff4d88; color: white; }
-#no { background: #ccc; }
-</style>
-</head>
-<body>
-
-<video id="video" src="walk.mp4" autoplay muted playsinline></video>
-
-<div id="question">
-  Will you be my Valentine? 💖<br>
-  <button id="yes">YES 💘</button>
-  <button id="no">No 🙈</button>
-</div>
-
-<script>
-const noBtn = document.getElementById("no");
-
-function moveButton() {
-  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-  noBtn.style.position = "absolute";
-  noBtn.style.left = x + "px";
-  noBtn.style.top = y + "px";
-}
-
-noBtn.addEventListener("mouseenter", moveButton);
-noBtn.addEventListener("touchstart", moveButton);
-</script>
-
-</body>
-</html>
+  /* Question area is separated, no overlap */
+  #question {
+    margin-top: 3vh;
+    width: 100%;
+    text-align: center;
+    font-size: clamp(22px, 4.2vw, 36px);
+    opacity: 0;
